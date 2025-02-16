@@ -3,9 +3,14 @@ plugins {
 }
 
 dependencies {
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.2'
+    implementation 'org.projectlombok:lombok:1.18.30'
+    implementation "org.springframework.cloud:spring-cloud-dependencies:2023.0.0"
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'
 }
 
 springBoot {
     mainClass = 'com.reliaquest.api.ApiApplication'
 }
+
