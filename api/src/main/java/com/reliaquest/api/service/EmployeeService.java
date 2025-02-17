@@ -29,6 +29,7 @@ public class EmployeeService {
         log.info("Calling external service");
         employeeResponseList = employeeClient.getAllEmployees().getData();
         if(employeeResponseList.isEmpty()){
+            log.debug("No Data found");
             throw new CustomException(CustomError.NO_DATA_FOUND);
         }
         log.info("Successfully fetched List of all employees: {}", employeeResponseList);
@@ -40,6 +41,7 @@ public class EmployeeService {
                 .filter(employee -> employee.getName().contains(name))
                 .toList();
         if(employeesFoundByName.isEmpty()){
+            log.debug("Employee with given name not found");
             throw new CustomException(CustomError.EMPLOYEE_WITH_GIVEN_NAME_NOT_FOUND);
         }
         log.info("Successfully fetched Employees whose name contains the {} are : {}",name, employeesFoundByName);
@@ -53,8 +55,11 @@ public class EmployeeService {
         Employee employee;
         log.info("Calling external service");
         employee = employeeClient.getEmployeeById(id).getData();
-        if(employee == null)
+        log.info(String.valueOf(employee));
+        if(employee == null){
+            log.debug("No Data found for given Id");
             throw new CustomException(CustomError.NO_DATA_FOUND);
+        }
         log.info("Successfully found Employee with id : {}", employee);
         return employee;
     }

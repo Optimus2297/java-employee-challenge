@@ -6,6 +6,8 @@ import com.reliaquest.api.exception.ValidationException;
 import com.reliaquest.api.external.EmployeeClient;
 import com.reliaquest.api.models.*;
 import feign.FeignException;
+import io.github.resilience4j.retry.RetryRegistry;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
