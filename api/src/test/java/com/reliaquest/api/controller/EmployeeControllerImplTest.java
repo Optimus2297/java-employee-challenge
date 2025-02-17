@@ -4,22 +4,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.reliaquest.api.exception.CustomError;
-import com.reliaquest.api.models.CreateEmployeeDTO;
 import com.reliaquest.api.models.Employee;
-import com.reliaquest.api.models.EmployeeResponse;
 import com.reliaquest.api.service.EmployeeService;
 import com.reliaquest.api.exception.CustomException;
 import com.reliaquest.api.exception.ValidationException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
+@ExtendWith(MockitoExtension.class)
 class EmployeeControllerImplTest {
 
     @Mock
@@ -30,26 +31,22 @@ class EmployeeControllerImplTest {
 
     private List<Employee> employeeList;
     private Employee employee;
-    private EmployeeResponse employeeResponse;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         employeeList = Arrays.asList(
                 new Employee("1", "John Doe", 50000, 30, "Developer", "john.doe@example.com"),
                 new Employee("2", "Jane Smith", 60000, 35, "Manager", "jane.smith@example.com")
         );
 
         employee = employeeList.get(0);
-        employeeResponse = new EmployeeResponse("Success", employee);
     }
 
     @Test
     void testGetAllEmployees_Success() {
         when(employeeService.getAllEmployees()).thenReturn(employeeList);
 
-        ResponseEntity<List> response = employeeController.getAllEmployees();
+        ResponseEntity<List<Employee>> response = employeeController.getAllEmployees();
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
@@ -61,7 +58,7 @@ class EmployeeControllerImplTest {
     void testGetAllEmployees_EmptyList() {
         when(employeeService.getAllEmployees()).thenReturn(Collections.emptyList());
 
-        ResponseEntity<List> response = employeeController.getAllEmployees();
+        ResponseEntity<List<Employee>> response = employeeController.getAllEmployees();
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
@@ -73,11 +70,11 @@ class EmployeeControllerImplTest {
     void testGetEmployeesByNameSearch_Success() {
         when(employeeService.getAllEmployeesBySearchName("John")).thenReturn(Collections.singletonList(employee));
 
-        ResponseEntity<List> response = employeeController.getEmployeesByNameSearch("John");
+        ResponseEntity<List<Employee>> response = employeeController.getEmployeesByNameSearch("John");
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(1, response.getBody().size());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).size());
         verify(employeeService, times(1)).getAllEmployeesBySearchName("John");
     }
 
@@ -145,13 +142,12 @@ class EmployeeControllerImplTest {
                 "email", "alex@company.com"
         );
 
-        when(employeeService.createEmployee(employeeMap)).thenReturn(employeeResponse);
+        when(employeeService.createEmployee(employeeMap)).thenReturn(employee);
 
-        ResponseEntity<EmployeeResponse> response = employeeController.createEmployee(employeeMap);
+        ResponseEntity<Employee> response = employeeController.createEmployee(employeeMap);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals("Success", response.getBody().getStatus());
+        assertEquals(201, response.getStatusCodeValue());
         verify(employeeService, times(1)).createEmployee(employeeMap);
     }
 

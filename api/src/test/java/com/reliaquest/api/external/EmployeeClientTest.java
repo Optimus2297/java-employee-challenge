@@ -28,8 +28,6 @@ class EmployeeClientTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         employeeList = Arrays.asList(
                 new Employee("1", "John Doe", 50000, 30, "Developer", "john.doe@example.com"),
                 new Employee("2", "Jane Smith", 60000, 35, "Manager", "jane.smith@example.com")

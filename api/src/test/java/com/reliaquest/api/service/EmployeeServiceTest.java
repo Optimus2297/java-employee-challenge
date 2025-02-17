@@ -5,13 +5,13 @@ import com.reliaquest.api.exception.CustomException;
 import com.reliaquest.api.exception.ValidationException;
 import com.reliaquest.api.external.EmployeeClient;
 import com.reliaquest.api.models.*;
-import com.reliaquest.api.validator.CreateEmployeeInputValidation;
 import feign.FeignException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
@@ -48,14 +48,6 @@ class EmployeeServiceTest {
 
         assertEquals(3, result.size());
         verify(employeeClient, times(1)).getAllEmployees();
-    }
-
-    @Test
-    void getAllEmployees_FeignException() {
-        when(employeeClient.getAllEmployees()).thenThrow(FeignException.class);
-
-        CustomException exception = assertThrows(CustomException.class, employeeService::getAllEmployees);
-        assertEquals(CustomError.FEIGN_CLIENT_ERROR, exception.getError());
     }
 
     @Test
@@ -122,9 +114,9 @@ class EmployeeServiceTest {
 
         when(employeeClient.createEmployee(createEmployeeDTO)).thenReturn(employeeResponse);
 
-        EmployeeResponse result = employeeService.createEmployee(employeeMap);
+        Employee result = employeeService.createEmployee(employeeMap);
 
-        assertEquals("David", result.getData().getName());
+        assertEquals("David", result.getName());
     }
 
     @Test

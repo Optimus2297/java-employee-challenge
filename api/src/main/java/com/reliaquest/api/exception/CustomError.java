@@ -14,7 +14,8 @@ public enum CustomError {
     MINIMUM_AGE_ERROR("E008", "Age cannot be less than 16"),
     MAXIMUM_AGE_ERROR("E009", "Age cannot be more than 75"),
     ID_CAN_NOT_BE_NULL("E010", "Id cannot be null"),
-    INVALID_OR_MISSING_TITLE("E011","Invalid or missing Title");
+    INVALID_OR_MISSING_TITLE("E011","Invalid or missing Title"),
+    RETRY_ERROR("E012","Failed to get response");
 
     private final String code;
     private final String message;

@@ -5,7 +5,6 @@ import com.reliaquest.api.exception.ValidationException;
 import com.reliaquest.api.models.CreateEmployeeDTO;
 import com.reliaquest.api.validator.CreateEmployeeInputValidation;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;

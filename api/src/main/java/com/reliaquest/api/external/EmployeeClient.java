@@ -7,7 +7,8 @@ import com.reliaquest.api.models.EmployeeResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "EmployeeAPI", url = "http://localhost:8112/api/v1")
+
+@FeignClient(name = "EmployeeAPI", url = "${employee.api.url}")
 public interface EmployeeClient {
 
     @GetMapping("/employee")
