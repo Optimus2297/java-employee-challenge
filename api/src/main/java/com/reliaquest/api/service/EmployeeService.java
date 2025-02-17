@@ -46,7 +46,7 @@ public class EmployeeService {
         return employeesFoundByName;
     }
 
-    @Retry(name = "employeeServiceRetry", fallbackMethod = "fallbackGetAllEmployees")
+    @Retry(name = "employeeServiceRetry", fallbackMethod = "fallbackGetEmployeeById")
     public Employee getEmployeeById(String id){
         if(id == null || id.isEmpty())
             throw new ValidationException(CustomError.ID_CAN_NOT_BE_NULL);
@@ -109,7 +109,13 @@ public class EmployeeService {
     }
 
     //fallback method when retry fails.
-    public void fallbackGetAllEmployees(FeignException e) throws CustomException{
+    public List<Employee> fallbackGetAllEmployees(FeignException e) throws CustomException{
+        log.error("Feign client exception : {}",e.getMessage());
+        throw new CustomException(CustomError.RETRY_ERROR);
+    }
+
+    //fallback method when retry fails.
+    public Employee fallbackGetEmployeeById(FeignException e) throws CustomException{
         log.error("Feign client exception : {}",e.getMessage());
         throw new CustomException(CustomError.RETRY_ERROR);
     }
